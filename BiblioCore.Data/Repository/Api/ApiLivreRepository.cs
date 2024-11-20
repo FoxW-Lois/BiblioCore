@@ -30,7 +30,7 @@ namespace BiblioCore.Data.Repository.Api
 
 		public async Task<IEnumerable<LivreModel>?> Get()
 		{
-			var reponse = await client.GetAsync($"{url}/livre"); // Correspond à l'url de l'action du controller
+			var reponse = await client.GetAsync($"{url}livre"); // Correspond à l'url de l'action du controller
 			if (reponse.IsSuccessStatusCode)
 				return await reponse.Content.ReadFromJsonAsync<IEnumerable<LivreModel>>();
 			return null;
@@ -38,7 +38,7 @@ namespace BiblioCore.Data.Repository.Api
 
 		public async Task<LivreModel?> Get(int id)
 		{
-			var reponse = await client.GetAsync($"{url}/livre/{id}");
+			var reponse = await client.GetAsync($"{url}livre/{id}");
 			if (reponse.IsSuccessStatusCode)
 				return await reponse.Content.ReadFromJsonAsync<LivreModel>();
 			return null;

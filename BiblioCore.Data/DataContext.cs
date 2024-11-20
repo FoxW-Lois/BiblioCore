@@ -3,7 +3,7 @@ using BiblioCore.Data.Models;
 
 namespace BiblioCore.Data
 {
-	public  class DataContext : DbContext
+	public class DataContext : DbContext
 	{
 		public DbSet<LivreModel> Livre { get; set; }
 		public DbSet<AuteurModel> Auteur { get; set; }
@@ -22,7 +22,7 @@ namespace BiblioCore.Data
 			modelBuilder.Entity<LivreModel>().HasData(
 				new LivreModel() { Id = 1, Titre = "Arbre" },
 				new LivreModel() { Id = 2, Titre = "Bob" },
-				new LivreModel() { Id = 2, Titre = "Chien" }
+				new LivreModel() { Id = 3, Titre = "Chien" }
 			);
 
 			modelBuilder.Entity<AuteurModel>().HasData(
@@ -34,7 +34,7 @@ namespace BiblioCore.Data
 			modelBuilder.Entity<RayonModel>().HasData(
 				new RayonModel() { Id = 1, Name = "A" },
 				new RayonModel() { Id = 2, Name = "B" },
-				new RayonModel() { Id = 2, Name = "C" }
+				new RayonModel() { Id = 3, Name = "C" }
 			);
 
 			modelBuilder.Entity<MembreModel>().HasData(

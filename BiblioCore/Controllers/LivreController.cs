@@ -21,7 +21,7 @@ namespace BiblioCore.Controllers
 			return await repository.Get();
 		}
 
-		[HttpGet("(id)")] // api/livre/{id}
+		[HttpGet("{id}")] // api/livre/{id}
 		public ActionResult<LivreModel> Get(int id)
 		{
 			var model = repository.Get(id).Result;
@@ -30,7 +30,7 @@ namespace BiblioCore.Controllers
 			return model;
 		}
 
-		[HttpDelete("(id)")] // api/person/{id}
+		[HttpDelete("{id}")] // api/person/{id}
 		public async Task<ActionResult> Delete(int id)
 		{
 			await repository.Delete(id);
@@ -46,7 +46,7 @@ namespace BiblioCore.Controllers
 			return model;
 		}
 
-		[HttpPut("(id)")] // api/livre/{id}
+		[HttpPut("{id}")] // api/livre/{id}
 		public async Task<ActionResult<LivreModel>> Update(int id, LivreModel model)
 		{
 			var person = await repository.Update(id, model);
