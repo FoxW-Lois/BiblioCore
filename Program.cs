@@ -1,3 +1,5 @@
+using BiblioCore.Data.Repository;
+using BiblioCore.Data.Repository.Sql;
 
 namespace BiblioCore
 {
@@ -14,14 +16,17 @@ namespace BiblioCore
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            var app = builder.Build();
+
+			// Enregistrement du repository
+			builder.Services.AddScoped<ILivreRepository, SqlLivreRepository>();
+			//builder.Services.AddScoped<IAuteurRepository, SqlAuteurRepository>();
+			//builder.Services.AddScoped<IRayonRepository, SqlRayonRepository>();
+			//builder.Services.AddScoped<IMembreRepository, SqlMembreRepository>();
+
+
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
 
             app.UseAuthorization();
 

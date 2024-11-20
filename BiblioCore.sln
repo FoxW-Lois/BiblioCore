@@ -5,6 +5,10 @@ VisualStudioVersion = 17.12.35506.116 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiblioCore", "BiblioCore.csproj", "{1F166B0A-B0FF-43EF-8BB4-1C66F3720E01}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiblioCore.Cmd", "..\BiblioCore.Cmd\BiblioCore.Cmd.csproj", "{9AB262D0-D059-4A16-85E9-569550F31167}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiblioCore.Data", "..\BiblioCore.Data\BiblioCore.Data.csproj", "{EDA23023-0DEB-4DA6-A183-4F942DE962E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{1F166B0A-B0FF-43EF-8BB4-1C66F3720E01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F166B0A-B0FF-43EF-8BB4-1C66F3720E01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F166B0A-B0FF-43EF-8BB4-1C66F3720E01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AB262D0-D059-4A16-85E9-569550F31167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AB262D0-D059-4A16-85E9-569550F31167}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AB262D0-D059-4A16-85E9-569550F31167}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AB262D0-D059-4A16-85E9-569550F31167}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDA23023-0DEB-4DA6-A183-4F942DE962E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDA23023-0DEB-4DA6-A183-4F942DE962E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDA23023-0DEB-4DA6-A183-4F942DE962E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDA23023-0DEB-4DA6-A183-4F942DE962E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
