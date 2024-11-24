@@ -15,6 +15,14 @@ namespace BiblioCore.Data.Repository.Api
 			client.BaseAddress = new Uri(url);
 		}
 
+		public async Task<LivreModel?> AssignRayon(int id, LivreModel model, int RayonModelId)
+		{
+			var response = await client.PutAsJsonAsync($"{url}livre/{id}", model);
+			if (response.IsSuccessStatusCode)
+				return await response.Content.ReadFromJsonAsync<LivreModel>();
+			return null;
+		}
+
 		public async Task<LivreModel?> Create(LivreModel model)
 		{
 			var response = await client.PostAsJsonAsync($"{url}livre", model);

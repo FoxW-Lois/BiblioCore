@@ -7,6 +7,7 @@ namespace BiblioCore.Data.Repository.Sql
 	public class SqlLivreRepository : ILivreRepository
     {
         private readonly DataContext context;
+
         public SqlLivreRepository(DataContext context)
         {
             this.context = context;
@@ -14,16 +15,17 @@ namespace BiblioCore.Data.Repository.Sql
 
         public async Task<IEnumerable<LivreModel>> Get()
         {
-            return await context.Set<LivreModel>().ToListAsync();//générique
+            return await context.Set<LivreModel>().ToListAsync(); //Générique
         }
 
         public async Task<LivreModel?> Get(int id)
         {
             return await context.Set<LivreModel>().FirstOrDefaultAsync(x => x.Id == id); // Pas d'exception générique
         }
+
         public async Task<LivreModel?> Create(LivreModel model)
         {
-            context.Set<LivreModel>().Add(model);//pour rendre le repository générique
+            context.Set<LivreModel>().Add(model); // Rend le repository générique
             await context.SaveChangesAsync(); // Execution de la requete
             return model;
         }
@@ -37,6 +39,7 @@ namespace BiblioCore.Data.Repository.Sql
             await context.SaveChangesAsync();
             return entity;
         }
+
         public async Task Delete(int id)
         {
             var model = await context.Set<LivreModel>().FirstOrDefaultAsync(x => x.Id == id);
@@ -45,5 +48,15 @@ namespace BiblioCore.Data.Repository.Sql
             context.Set<LivreModel>().Remove(model);
             await context.SaveChangesAsync();
         }
-    }
+
+		public async Task<LivreModel?> AssignRayon(int id, LivreModel model, int RayonModelId)
+		{
+			var entity = await context.Set<LivreModel>().FirstOrDefaultAsync(x => x.Id == id);
+			if (entity == null)
+				return null;
+			context.Entry(entity).CurrentValues.SetValues(model);
+			await context.SaveChangesAsync();
+			return entity;
+		}
+	}
 }

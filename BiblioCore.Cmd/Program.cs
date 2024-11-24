@@ -23,11 +23,12 @@ namespace BiblioCore.Cmd
 								"|     Ajouter un livre : 3     |\n" +
 								"|     Modifier un livre : 4    |\n" +
 								"|    Supprimer un livre : 5    |\n" +
+								"| Assigner un rayon à un livre : 6    |\n" +
 								"|                              |\n" +
 								"+------------------------------+\n\n"
 				);
 
-				if (!int.TryParse(Console.ReadLine(), out int Action) || Action < 1 || Action > 5)
+				if (!int.TryParse(Console.ReadLine(), out int Action) || Action < 1 || Action > 6)
 					Console.Write("Cette Action n'est pas valide. Veuillez réessayer\n\n");
 
 				switch (Action) {
@@ -60,6 +61,12 @@ namespace BiblioCore.Cmd
 						DeleteLivre(repository);
 						Console.WriteLine("\n");
 					break;
+
+					case 6:
+						Console.WriteLine("\n");
+						AssignRayonToLivre(repository);
+						Console.WriteLine("\n");
+					break;
 				}
 			}
 		}
@@ -78,7 +85,7 @@ namespace BiblioCore.Cmd
 			Console.WriteLine(
 							"+-------------------------------------------+\n" +
 							"|\n" +
-							string.Join("\n", models.Select(x => $"|    - Livre n°{x.Id} : {x.Titre}")) +
+							string.Join("\n", models.Select(x => $"|    - Livre n°{x.Id} : {x.Titre}, Rayon : {x.RayonModelId}")) +
 							"\n|\n" +
 							"+-------------------------------------------+");
 		}
@@ -135,14 +142,18 @@ namespace BiblioCore.Cmd
 				Console.WriteLine("+----------------------------------------------------+");
 
 				Console.Write("|   Entrez l'Id de l'auteur du nouveau Livre : ");
-				if (!int.TryParse(Console.ReadLine(), out int lAuteurModelId))
+				if (!int.TryParse(Console.ReadLine(), out int lAuteurModelId) && lAuteurModelId == 0)
 				{
 					Console.WriteLine("L'Id doit être exclusivement composé chiffre");
 					return;
 				}
+				if (lAuteurModelId == 0)
+				{
+					return;
+				}
 				Console.WriteLine("+----------------------------------------------------+\n");
 
-				var Livre = new LivreModel() { Id = 7, Titre = lTitre, AuteurModelId = lAuteurModelId };
+				var Livre = new LivreModel() { Titre = lTitre, AuteurModelId = lAuteurModelId };
 				Livre = repository.Create(Livre).Result;
 
 				if (Livre == null)
@@ -152,6 +163,7 @@ namespace BiblioCore.Cmd
 					//Récupère en base de données le nom de l'auteur correspondant à AuteurModelId
 					//string NomAuteur = ;
 					Console.WriteLine($"Le livre n°{Livre.Id} : {Livre.Titre}, Auteur : {Livre.AuteurModelId}" /*NomAuteur */ + " a été ajouté\n");
+
 				}
 
 				//ContinueOrNo();
@@ -179,12 +191,19 @@ namespace BiblioCore.Cmd
 			int id = GetId("Id du Livre à modifier :");
 			if (id == 0)
 				return;
+
 			var model = repository.Get(id).Result;
+
 			if (model == null)
 				Console.WriteLine("Livre introuvable");
 			else
 			{
-				model.Titre = "NouveauNom";
+				Console.Write("+----------------------------------------------------+\n" +
+									"|   Entrez le nouveau titre du Livre : ");
+				string lNouveauTitre = Console.ReadLine();
+				Console.WriteLine("+----------------------------------------------------+");
+
+				model.Titre = lNouveauTitre;
 				model = repository.Update(id, model).Result;
 				Console.WriteLine($"Mise à jour du livre n°{model.Id} : {model.Titre} \n");
 			}
@@ -198,6 +217,38 @@ namespace BiblioCore.Cmd
 			repository.Delete(id).Wait();
 			Console.WriteLine("Suppression effectuée");
 		}
+
+
+		// ----------------------------- Fonctionnalités ------------------------------
+
+		private static void AssignRayonToLivre(ILivreRepository repository)
+		{
+			int id = GetId("Id du Livre à ranger :");
+			if (id == 0)
+				return;
+
+			var model = repository.Get(id).Result;
+
+			if (model == null)
+				Console.WriteLine("Livre introuvable");
+			else
+			{
+				Console.Write("+----------------------------------------------------+\n" +
+									"|   Entrez l'Id du Rayon du Livre : ");
+
+				if (!int.TryParse(Console.ReadLine(), out int lRayonModelId))
+				{
+					Console.WriteLine("L'Id doit être exclusivement composé chiffre");
+					return;
+				}
+				Console.WriteLine("+----------------------------------------------------+");
+
+				model.RayonModelId = lRayonModelId;
+				model = repository.AssignRayon(id, model, lRayonModelId).Result;
+				Console.WriteLine($"Mise à jour du livre n°{model.Id} : {model.Titre}, Rayon : {model.RayonModelId} \n");
+			}
+		}
+
 
 		// ----------------------------------------------------------------------------
 

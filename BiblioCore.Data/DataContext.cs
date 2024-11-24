@@ -11,8 +11,8 @@ namespace BiblioCore.Data
 		public DataContext(DbContextOptions<DataContext> options)
 			: base(options)
 		{
-			Database.EnsureDeleted();
-			Database.EnsureCreated();
+			//Database.EnsureDeleted();
+			//Database.EnsureCreated();
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -20,11 +20,11 @@ namespace BiblioCore.Data
 			base.OnModelCreating(modelBuilder);
 
 			modelBuilder.Entity<LivreModel>().HasData(
-				new LivreModel() { Id = 1, Titre = "Les Misérables"},
+				new LivreModel() { Id = 1, Titre = "Les Misérables", RayonModelId = 1 },
 				new LivreModel() { Id = 2, Titre = "Notre-Dame de Paris" },
-				new LivreModel() { Id = 3, Titre = "1984" },
+				new LivreModel() { Id = 3, Titre = "1984", RayonModelId = 2 },
 				new LivreModel() { Id = 4, Titre = "La Ferme des animaux" },
-				new LivreModel() { Id = 5, Titre = "Le Petit Prince" },
+				new LivreModel() { Id = 5, Titre = "Le Petit Prince", RayonModelId = 3 },
 				new LivreModel() { Id = 6, Titre = "Vol de Nuit" }
 			);
 
@@ -35,9 +35,10 @@ namespace BiblioCore.Data
 			);
 
 			modelBuilder.Entity<RayonModel>().HasData(
-				new RayonModel() { Id = 1, Name = "Classiques Français" },
-				new RayonModel() { Id = 2, Name = "Dystopies" },
-				new RayonModel() { Id = 3, Name = "Littérature" }
+				new RayonModel() { Id = 1, Name = "Sans rayon" },
+				new RayonModel() { Id = 2, Name = "Classiques Français" },
+				new RayonModel() { Id = 3, Name = "Dystopies" },
+				new RayonModel() { Id = 4, Name = "Littérature" }
 			);
 
 			modelBuilder.Entity<MembreModel>().HasData(

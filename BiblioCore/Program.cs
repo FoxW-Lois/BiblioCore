@@ -19,8 +19,8 @@ namespace BiblioCore
 
             // Enregistrement du repository
             builder.Services.AddScoped<ILivreRepository, SqlLivreRepository>();
-			//builder.Services.AddScoped<IAuteurRepository, SqlAuteurRepository>();
-			//builder.Services.AddScoped<IRayonRepository, SqlRayonRepository>();
+			builder.Services.AddScoped<IAuteurRepository, SqlAuteurRepository>();
+			builder.Services.AddScoped<IRayonRepository, SqlRayonRepository>();
 			//builder.Services.AddScoped<IMembreRepository, SqlMembreRepository>();
 
 
