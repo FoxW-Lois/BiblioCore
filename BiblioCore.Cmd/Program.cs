@@ -34,7 +34,7 @@ namespace BiblioCore.Cmd
 								"+---------------------------------------+\n"
 				);
 
-                if (!int.TryParse(Console.ReadLine(), out int Action) || Action < 1 || Action > 6)
+                if (!int.TryParse(Console.ReadLine(), out int Action) || Action < 1 || Action > 7)
 					Console.Write("Cette Action n'est pas valide. Veuillez réessayer\n\n");
 
 				switch (Action) {
@@ -95,39 +95,39 @@ namespace BiblioCore.Cmd
 			}
 
 			Console.WriteLine(
-							"+-------------------------------------------+\n" +
+							"+----------------------------------------------------+\n" +
 							"|\n" +
 							string.Join("\n", models.Select(x => $"|    - Livre n°{x.Id} : {x.Titre}, Rayon : {x.RayonModelId}")) +
 							"\n|\n" +
-							"+-------------------------------------------+");
+							"+----------------------------------------------------+");
 		}
 
 		private static void GetLivre(ILivreRepository repository)
 		{
 			while (true)
 			{
-				int id = GetId("+-------------------------------------------+\n" +
+				int id = GetId("+----------------------------------------------------+\n" +
 								"|    - Id du Livre à voir : ");
 				if (id == 0)
 					return;
 				var model = repository.Get(id).Result;
 				if (model == null)
 				{
-					Console.WriteLine("+-------------------------------------------+\n");
+					Console.WriteLine("+----------------------------------------------------+\n");
 					Console.WriteLine("Livre introuvable\n");
 				}
 				else
 					Console.WriteLine(
-							"+-------------------------------------------+\n" +
+							"+----------------------------------------------------+\n" +
 							"|\n" +
 							$"|    Livre n°{model.Id} : {model.Titre}" +
 							"\n|\n" +
-							"+-------------------------------------------+\n");
+							"+----------------------------------------------------+\n");
 
 				//ContinueOrNo();
 				do
 				{
-					Console.WriteLine("Voulez-vous continuer ? (y/n)\n");
+					Console.WriteLine("Voulez-vous continuer ? (y/n)");
 					string reponse = Console.ReadLine();
 					if (reponse == "y")
 					{
@@ -181,7 +181,7 @@ namespace BiblioCore.Cmd
 				//ContinueOrNo();
 				do
 				{
-					Console.WriteLine("Voulez-vous continuer ? (y/n)\n");
+					Console.WriteLine("Voulez-vous continuer ? (y/n)");
 					string reponse = Console.ReadLine();
 					if (reponse == "y")
 					{
@@ -200,14 +200,18 @@ namespace BiblioCore.Cmd
 
 		private static void UpdateLivre(ILivreRepository repository)
 		{
-			int id = GetId("Id du Livre à modifier :");
+			int id = GetId("+----------------------------------------------------+\n" +
+							"|   Id du Livre à modifier : ");
 			if (id == 0)
 				return;
 
 			var model = repository.Get(id).Result;
 
 			if (model == null)
-				Console.WriteLine("Livre introuvable");
+			{
+				Console.WriteLine("+----------------------------------------------------+\n");
+				Console.WriteLine("Livre introuvable\n");
+			}
 			else
 			{
 				Console.Write("+----------------------------------------------------+\n" +
@@ -223,11 +227,13 @@ namespace BiblioCore.Cmd
 
 		private static void DeleteLivre(ILivreRepository repository)
 		{
-			int id = GetId("Id du Livre à supprimer :");
+			int id = GetId("+----------------------------------------------------+\n" +
+							"|   Id du Livre à supprimer : ");
 			if (id == 0)
 				return;
+			Console.WriteLine("+----------------------------------------------------+\n");
 			repository.Delete(id).Wait();
-			Console.WriteLine("Suppression effectuée");
+			Console.WriteLine("Suppression effectuée\n");
 		}
 
 
@@ -235,44 +241,69 @@ namespace BiblioCore.Cmd
 
 		private static void AssignRayonToLivre(ILivreRepository repository)
 		{
-			int id = GetId("Id du Livre à ranger :");
-			if (id == 0)
-				return;
-
-			var model = repository.Get(id).Result;
-
-			if (model == null)
-				Console.WriteLine("Livre introuvable");
-			else
+			while (true)
 			{
-				Console.Write("+----------------------------------------------------+\n" +
-									"|   Entrez l'Id du Rayon du Livre : ");
-
-				if (!int.TryParse(Console.ReadLine(), out int lRayonModelId))
-				{
-					Console.WriteLine("L'Id doit être exclusivement composé chiffre");
+				int id = GetId("+----------------------------------------------------+\n" +
+								"|   Id du Livre à ranger : ");
+				if (id == 0)
 					return;
-				}
-				Console.WriteLine("+----------------------------------------------------+");
 
-				model.RayonModelId = lRayonModelId;
-                model = repository.AssignRayon(id, model, lRayonModelId).Result;
-				Console.WriteLine($"Mise à jour du livre n°{model.Id} : {model.Titre}, Rayon : {model.RayonModelId} \n");
+				Console.WriteLine("+----------------------------------------------------+\n");
+
+				var model = repository.Get(id).Result;
+
+				if (model == null)
+					Console.WriteLine("Livre introuvable");
+				else
+				{
+					Console.Write("+----------------------------------------------------+\n" +
+										"|   Entrez l'Id du Rayon du Livre : ");
+
+					if (!int.TryParse(Console.ReadLine(), out int lRayonModelId))
+					{
+						Console.WriteLine("L'Id doit être exclusivement composé chiffre");
+						return;
+					}
+					Console.WriteLine("+----------------------------------------------------+");
+
+					model.RayonModelId = lRayonModelId;
+					model = repository.AssignRayon(id, model, lRayonModelId).Result;
+					Console.WriteLine($"Mise à jour du livre n°{model.Id} : {model.Titre}, Rayon : {model.RayonModelId} \n");
+				}
+
+				//ContinueOrNo();
+				do
+				{
+					Console.WriteLine("Voulez-vous continuer ? (y/n)");
+					string reponse = Console.ReadLine();
+					if (reponse == "y")
+					{
+						Console.WriteLine("\n");
+						break;
+					}
+					else if (reponse == "n")
+						return;
+					else
+					{
+						Console.WriteLine("Erreur veuillez réessayer");
+					}
+				} while (true);
 			}
 		}
 
-        private static void ListLivreByRayon(ILivreRepository repository)
+		private static void ListLivreByRayon(ILivreRepository repository)
         {
 			while (true)
 			{
-                int id = GetId("Id du Rayon à afficher:");
+                int id = GetId("+----------------------------------------------------+\n" +
+								"|   Id du Rayon à afficher : ");
                 if (id == 0)
                     return;
 
-                var model = repository.Get(id).Result;
+                var model = repository.ListByRayonId(id).Result;
                 if (model == null)
 				{
-					Console.WriteLine("+-------------------------------------------+\n");
+					Console.WriteLine("+----------------------------------------------------+\n");
 					Console.WriteLine("Rayon introuvable\n");
 				}
 				else
@@ -286,16 +317,29 @@ namespace BiblioCore.Cmd
 					model.RayonModelId = lRayonModelId;
 					model = repository.ListRayon(id, model, lRayonModelId).Result;
                     Console.WriteLine(
-                            "+-------------------------------------------+\n" +
+							"+----------------------------------------------------+\n" +
                             "|\n" +
-                            string.Join("\n", 
-											model.Where(x => x.RayonModelId == lRayonModelId)
-												 .Select(x => $"|    - Livre n°{x.Id} : {x.Titre}, Rayon : {x.RayonModelId}")) +
+                            string.Join("\n", model.Select(x => $"|    - Livre n°{x.Id} : {x.Titre}, Rayon : {x.RayonModelId}")) +
                             "\n|\n" +
-                            "+-------------------------------------------+");
+							"+----------------------------------------------------+");
 
-
-                }
+					do
+					{
+						Console.WriteLine("Voulez-vous continuer ? (y/n)");
+						string reponse = Console.ReadLine();
+						if (reponse == "y")
+						{
+							Console.WriteLine("\n");
+							break;
+						}
+						else if (reponse == "n")
+							return;
+						else
+						{
+							Console.WriteLine("Erreur veuillez réessayer");
+						}
+					} while (true);
+				}
 
                 //ContinueOrNo();
                 do

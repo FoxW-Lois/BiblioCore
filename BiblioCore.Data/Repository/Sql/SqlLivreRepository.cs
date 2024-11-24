@@ -61,7 +61,7 @@ namespace BiblioCore.Data.Repository.Sql
 
         public async Task<LivreModel?> ListRayon(int id, LivreModel model, int rayonModelId)
         {
-            return await context.Set<LivreModel>().FirstOrDefaultAsync(x => x.Id == rayonModelId);
+            //return await context.Set<LivreModel>().FirstOrDefaultAsync(x => x.RayonModelId == rayonModelId);
         }
     }
 }

@@ -52,7 +52,13 @@ namespace BiblioCore.Data.Repository.Api
 			return null;
 		}
 
-        public async Task<LivreModel?> ListRayon(int id, LivreModel model, int rayonModelId)
+		//public Task<IEnumerable<LivreModel>> ListByRayonId(int rayonId)
+		//{
+		//	var result = _livres.Where(livre => livre.RayonModelId == rayonId);
+		//	return Task.FromResult(result);
+		//}
+
+		public async Task<LivreModel?> ListRayon(int id, LivreModel model, int rayonModelId)
         {
             var reponse = await client.GetAsync($"{url}rayon/{rayonModelId}");
             if (reponse.IsSuccessStatusCode)
