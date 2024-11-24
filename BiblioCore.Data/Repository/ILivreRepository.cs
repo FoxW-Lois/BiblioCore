@@ -10,6 +10,7 @@ namespace BiblioCore.Data.Repository
 		Task<LivreModel?> Create(LivreModel model);
 		Task<LivreModel?> Update(int id, LivreModel model);
 		Task<LivreModel?> AssignRayon(int id, LivreModel model, int RayonModelId);
-		Task Delete(int id);
+        Task<LivreModel?> ListRayon(int id, LivreModel model, int RayonModelId);
+        Task Delete(int id);
 	}
 }

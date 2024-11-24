@@ -14,21 +14,27 @@ namespace BiblioCore.Cmd
 
 			while (true)
 			{
-				Console.WriteLine("+------------------------------+\n" +
-								"|   Que voulez-vous faire ?    |\n" +
-								"+------------------------------+\n" +
-								"|                              |\n" +
-								"|   Voir tous les livres : 1   |\n" +
-								"|    Voir un seul livre : 2    |\n" +
-								"|     Ajouter un livre : 3     |\n" +
-								"|     Modifier un livre : 4    |\n" +
-								"|    Supprimer un livre : 5    |\n" +
-								"| Assigner un rayon à un livre : 6    |\n" +
-								"|                              |\n" +
-								"+------------------------------+\n\n"
+                Console.WriteLine("+---------------------------------------+\n" +
+								"|       Que voulez-vous faire ?         |\n" +
+								"+---------------------------------------+\n" +
+								"|                                       |\n" +
+								"|       Voir tous les livres : 1        |\n" +
+								"|        Voir un seul livre : 2         |\n" +
+								"|         Ajouter un livre : 3          |\n" +
+								"|         Modifier un livre : 4         |\n" +
+								"|        Supprimer un livre : 5         |\n" +
+								"|   Assigner un rayon à un livre : 6    |\n" +
+								"|    Lister les livres par rayon : 7    |\n" +
+								"|   Lister les livres par auteur : 8    |\n" +
+								"|   Rechercher un livre par titre : 9   |\n" +
+								"|        Emprunter un livre : 10        |\n" +
+								"|         Rendre un livre : 11          |\n" +
+								"|   Lister les livres empruntés : 12    |\n" +
+								"|                                       |\n" +
+								"+---------------------------------------+\n"
 				);
 
-				if (!int.TryParse(Console.ReadLine(), out int Action) || Action < 1 || Action > 6)
+                if (!int.TryParse(Console.ReadLine(), out int Action) || Action < 1 || Action > 6)
 					Console.Write("Cette Action n'est pas valide. Veuillez réessayer\n\n");
 
 				switch (Action) {
@@ -67,7 +73,13 @@ namespace BiblioCore.Cmd
 						AssignRayonToLivre(repository);
 						Console.WriteLine("\n");
 					break;
-				}
+
+                    case 7:
+                        Console.WriteLine("\n");
+                        ListLivreByRayon(repository);
+                        Console.WriteLine("\n");
+                    break;
+                }
 			}
 		}
 
@@ -244,15 +256,70 @@ namespace BiblioCore.Cmd
 				Console.WriteLine("+----------------------------------------------------+");
 
 				model.RayonModelId = lRayonModelId;
-				model = repository.AssignRayon(id, model, lRayonModelId).Result;
+                model = repository.AssignRayon(id, model, lRayonModelId).Result;
 				Console.WriteLine($"Mise à jour du livre n°{model.Id} : {model.Titre}, Rayon : {model.RayonModelId} \n");
 			}
 		}
 
+        private static void ListLivreByRayon(ILivreRepository repository)
+        {
+			while (true)
+			{
+                int id = GetId("Id du Rayon à afficher:");
+                if (id == 0)
+                    return;
 
-		// ----------------------------------------------------------------------------
+                var model = repository.Get(id).Result;
+                if (model == null)
+				{
+					Console.WriteLine("+-------------------------------------------+\n");
+					Console.WriteLine("Rayon introuvable\n");
+				}
+				else
+				{ 
+					if (!int.TryParse(Console.ReadLine(), out int lRayonModelId))
+					{
+						Console.WriteLine("L'Id doit être exclusivement composé chiffre");
+						return;
+					}
 
-		private static int GetId(string message)
+					model.RayonModelId = lRayonModelId;
+					model = repository.ListRayon(id, model, lRayonModelId).Result;
+                    Console.WriteLine(
+                            "+-------------------------------------------+\n" +
+                            "|\n" +
+                            string.Join("\n", 
+											model.Where(x => x.RayonModelId == lRayonModelId)
+												 .Select(x => $"|    - Livre n°{x.Id} : {x.Titre}, Rayon : {x.RayonModelId}")) +
+                            "\n|\n" +
+                            "+-------------------------------------------+");
+
+
+                }
+
+                //ContinueOrNo();
+                do
+                {
+                    Console.WriteLine("Voulez-vous continuer ? (y/n)\n");
+                    string reponse = Console.ReadLine();
+                    if (reponse == "y")
+                    {
+                        Console.WriteLine("\n");
+                        break;
+                    }
+                    else if (reponse == "n")
+                        return;
+                    else
+                    {
+                        Console.WriteLine("Erreur veuillez réessayer");
+                    }
+                } while (true);
+            }
+        }
+
+        // ----------------------------------------------------------------------------
+
+        private static int GetId(string message)
 		{
 			do
 			{
