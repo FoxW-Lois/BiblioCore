@@ -20,27 +20,30 @@ namespace BiblioCore.Data
 			base.OnModelCreating(modelBuilder);
 
 			modelBuilder.Entity<LivreModel>().HasData(
-				new LivreModel() { Id = 1, Titre = "Arbre" },
-				new LivreModel() { Id = 2, Titre = "Bob" },
-				new LivreModel() { Id = 3, Titre = "Chien" }
+				new LivreModel() { Id = 1, Titre = "Les Misérables"},
+				new LivreModel() { Id = 2, Titre = "Notre-Dame de Paris" },
+				new LivreModel() { Id = 3, Titre = "1984" },
+				new LivreModel() { Id = 4, Titre = "La Ferme des animaux" },
+				new LivreModel() { Id = 5, Titre = "Le Petit Prince" },
+				new LivreModel() { Id = 6, Titre = "Vol de Nuit" }
 			);
 
 			modelBuilder.Entity<AuteurModel>().HasData(
-				new AuteurModel() { Id = 1, FirstName = "Aaaa", LastName = "Bbbbb" },
-				new AuteurModel() { Id = 2, FirstName = "Ccccc", LastName = "Ddddd" },
-				new AuteurModel() { Id = 3, FirstName = "Eeeee", LastName = "Fffff" }
+				new AuteurModel() { Id = 1, FirstName = "Victor", LastName = "Hugo" },
+				new AuteurModel() { Id = 2, FirstName = "George", LastName = "Orwell" },
+				new AuteurModel() { Id = 3, FirstName = "Antoine", LastName = "de Saint-Exupéry" }
 			);
 
 			modelBuilder.Entity<RayonModel>().HasData(
-				new RayonModel() { Id = 1, Name = "A" },
-				new RayonModel() { Id = 2, Name = "B" },
-				new RayonModel() { Id = 3, Name = "C" }
+				new RayonModel() { Id = 1, Name = "Classiques Français" },
+				new RayonModel() { Id = 2, Name = "Dystopies" },
+				new RayonModel() { Id = 3, Name = "Littérature" }
 			);
 
 			modelBuilder.Entity<MembreModel>().HasData(
-				new MembreModel() { Id = 1, FirstName = "1A", LastName = "1B" },
-				new MembreModel() { Id = 2, FirstName = "2C", LastName = "2D" },
-				new MembreModel() { Id = 3, FirstName = "3E", LastName = "3F" }
+				new MembreModel() { Id = 1, FirstName = "Alice", LastName = "Dupont" },
+				new MembreModel() { Id = 2, FirstName = "Jean", LastName = "Martin" },
+				new MembreModel() { Id = 3, FirstName = "Sophie", LastName = "Durand" }
 			);
 
 		}

@@ -1,98 +1,235 @@
 ﻿using BiblioCore.Data.Models;
 using BiblioCore.Data.Repository;
 using BiblioCore.Data.Repository.Api;
-using System.Text;
 
 namespace BiblioCore.Cmd
 {
-    internal class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello World! \n");
+	internal class Program
+	{
+		static void Main(string[] args)
+		{
+			Console.WriteLine("Bienvenue sur l'API BiblioCore !\n");
+			Thread.Sleep(1000); // Attente du server
+			ILivreRepository repository = new ApiLivreRepository("http://localhost:5049/api/");
 
-            Thread.Sleep(2000); // Attente du server
-            ILivreRepository repository = new ApiLivreRepository("http://localhost:5049/api/");
-            GetLivres(repository);
-            GetLivre(repository);
-            //CreateLivre(repository);
-            //UpdateLivre(repository);
-            //DeleteLivre(repository);
-            Console.ReadLine();
-        }
-        private static void CreateLivre(ILivreRepository repository)
-        {
-            var Livre = new LivreModel() { Id = 4, Titre = "Soleil" };
-            Livre = repository.Create(Livre).Result;
-            if (Livre == null)
-                Console.WriteLine("Livre introuvable");
+			while (true)
+			{
+				Console.WriteLine("+------------------------------+\n" +
+								"|   Que voulez-vous faire ?    |\n" +
+								"+------------------------------+\n" +
+								"|                              |\n" +
+								"|   Voir tous les livres : 1   |\n" +
+								"|    Voir un seul livre : 2    |\n" +
+								"|     Ajouter un livre : 3     |\n" +
+								"|     Modifier un livre : 4    |\n" +
+								"|    Supprimer un livre : 5    |\n" +
+								"|                              |\n" +
+								"+------------------------------+\n\n"
+				);
 
-            else
-                Console.WriteLine($"{Livre.Id}{Livre.Titre} \n");
-        }
+				if (!int.TryParse(Console.ReadLine(), out int Action) || Action < 1 || Action > 5)
+					Console.Write("Cette Action n'est pas valide. Veuillez réessayer\n\n");
 
-        private static void DeleteLivre(ILivreRepository repository)
-        {
-            int id = GetId("Id du Livre à supprimer :");
-            if (id == 0)
-                return;
-            repository.Delete(id).Wait();
-        }
+				switch (Action) {
+					case 1 :
+						Console.WriteLine("\n");
+						GetLivres(repository);
+						Console.WriteLine("\n");
+					break;
 
-        private static void UpdateLivre(ILivreRepository repository)
-        {
-            int id = GetId("Id de la Livrene à modifier :");
-            if (id == 0)
-                return;
-            var model = repository.Get(id).Result;
-            if (model == null)
-            {
-                Console.WriteLine("Président introuvable");
-            }
-            else
-            {
-                model.Titre = "Trouduc";
-                model = repository.Update(id, model).Result;
-                Console.WriteLine($"{model.Id}{model.Titre} \n");
-            }
-        }
+					case 2:
+						Console.WriteLine("\n");
+						GetLivre(repository);
+						Console.WriteLine("\n");
+					break;
 
+					case 3:
+						Console.WriteLine("\n");
+						CreateLivre(repository);
+						Console.WriteLine("\n");
+					break;
 
-        private static void GetLivre(ILivreRepository repository)
-        {
-            while (true)
-            {
-                int id = GetId("Id de la Livre :");
-                if (id == 0)
-                    return;
-                var model = repository.Get(id).Result;
-                if (model == null)
-                    Console.WriteLine("Livre introuvable");
-                else
-                    Console.WriteLine($"{model.Id} {model.Titre}\n");
-            }
-        }
+					case 4:
+						Console.WriteLine("\n");
+						UpdateLivre(repository);
+						Console.WriteLine("\n");
+					break;
 
-        private static int GetId(string message)
-        {
-            do
-            {
-                Console.Write(message);
-                if (int.TryParse(Console.ReadLine(), out int id))
-                    return id;
-            } while (true);
-        }
+					case 5:
+						Console.WriteLine("\n");
+						DeleteLivre(repository);
+						Console.WriteLine("\n");
+					break;
+				}
+			}
+		}
 
-        private static void GetLivres(ILivreRepository repository)
-        {
-            var models = repository.Get().Result;
-            if (models == null)
-            {
-                Console.WriteLine("Erreur Api");
-                return;
-            }
-            Console.WriteLine(string.Join("\n", models.Select(x => $"{x.Id}{x.Titre} ")));
-        }
-    }
+		// ------------------------------ Fonctions CRUD ------------------------------
+
+		private static void GetLivres(ILivreRepository repository)
+		{
+			var models = repository.Get().Result;
+			if (models == null)
+			{
+				Console.WriteLine("Erreur Api");
+				return;
+			}
+
+			Console.WriteLine(
+							"+-------------------------------------------+\n" +
+							"|\n" +
+							string.Join("\n", models.Select(x => $"|    - Livre n°{x.Id} : {x.Titre}")) +
+							"\n|\n" +
+							"+-------------------------------------------+");
+		}
+
+		private static void GetLivre(ILivreRepository repository)
+		{
+			while (true)
+			{
+				int id = GetId("+-------------------------------------------+\n" +
+								"|    - Id du Livre à voir : ");
+				if (id == 0)
+					return;
+				var model = repository.Get(id).Result;
+				if (model == null)
+				{
+					Console.WriteLine("+-------------------------------------------+\n");
+					Console.WriteLine("Livre introuvable\n");
+				}
+				else
+					Console.WriteLine(
+							"+-------------------------------------------+\n" +
+							"|\n" +
+							$"|    Livre n°{model.Id} : {model.Titre}" +
+							"\n|\n" +
+							"+-------------------------------------------+\n");
+
+				//ContinueOrNo();
+				do
+				{
+					Console.WriteLine("Voulez-vous continuer ? (y/n)\n");
+					string reponse = Console.ReadLine();
+					if (reponse == "y")
+					{
+						Console.WriteLine("\n");
+						break;
+					}
+					else if (reponse == "n")
+						return;
+					else
+					{
+						Console.WriteLine("Erreur veuillez réessayer");
+					}
+				} while (true);
+			}
+		}
+
+		private static void CreateLivre(ILivreRepository repository)
+		{
+			while (true)
+			{
+				Console.Write("+----------------------------------------------------+\n" +
+									"|   Entrez un titre pour le nouveau Livre : ");
+				string lTitre = Console.ReadLine();
+				Console.WriteLine("+----------------------------------------------------+");
+
+				Console.Write("|   Entrez l'Id de l'auteur du nouveau Livre : ");
+				if (!int.TryParse(Console.ReadLine(), out int lAuteurModelId))
+				{
+					Console.WriteLine("L'Id doit être exclusivement composé chiffre");
+					return;
+				}
+				Console.WriteLine("+----------------------------------------------------+\n");
+
+				var Livre = new LivreModel() { Id = 7, Titre = lTitre, AuteurModelId = lAuteurModelId };
+				Livre = repository.Create(Livre).Result;
+
+				if (Livre == null)
+					Console.WriteLine("Livre introuvable\n");
+				else
+				{
+					//Récupère en base de données le nom de l'auteur correspondant à AuteurModelId
+					//string NomAuteur = ;
+					Console.WriteLine($"Le livre n°{Livre.Id} : {Livre.Titre}, Auteur : {Livre.AuteurModelId}" /*NomAuteur */ + " a été ajouté\n");
+				}
+
+				//ContinueOrNo();
+				do
+				{
+					Console.WriteLine("Voulez-vous continuer ? (y/n)\n");
+					string reponse = Console.ReadLine();
+					if (reponse == "y")
+					{
+						Console.WriteLine("\n");
+						break;
+					}
+					else if (reponse == "n")
+						return;
+					else
+					{
+						Console.WriteLine("Erreur veuillez réessayer");
+					}
+				} while (true);
+			}
+		}
+
+		private static void UpdateLivre(ILivreRepository repository)
+		{
+			int id = GetId("Id du Livre à modifier :");
+			if (id == 0)
+				return;
+			var model = repository.Get(id).Result;
+			if (model == null)
+				Console.WriteLine("Livre introuvable");
+			else
+			{
+				model.Titre = "NouveauNom";
+				model = repository.Update(id, model).Result;
+				Console.WriteLine($"Mise à jour du livre n°{model.Id} : {model.Titre} \n");
+			}
+		}
+
+		private static void DeleteLivre(ILivreRepository repository)
+		{
+			int id = GetId("Id du Livre à supprimer :");
+			if (id == 0)
+				return;
+			repository.Delete(id).Wait();
+			Console.WriteLine("Suppression effectuée");
+		}
+
+		// ----------------------------------------------------------------------------
+
+		private static int GetId(string message)
+		{
+			do
+			{
+				Console.Write(message);
+				if (int.TryParse(Console.ReadLine(), out int id))
+					return id;
+			} while (true);
+		}
+
+		//private static void ContinueOrNo()
+		//{
+		//	do
+		//	{
+		//		Console.WriteLine("Voulez-vous continuer ? (y/n)\n");
+		//		string reponse = Console.ReadLine();
+		//		if (reponse == "y")
+		//		{
+		//			Console.WriteLine("\n");
+		//			break;
+		//		}
+		//		else if (reponse == "n")
+		//			return;
+		//		else
+		//		{
+		//			Console.WriteLine("Erreur veuillez réessayer");
+		//		}
+		//	} while (true);
+		//}
+	}
 }
 
