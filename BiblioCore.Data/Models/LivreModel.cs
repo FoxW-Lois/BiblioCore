@@ -9,5 +9,6 @@ namespace BiblioCore.Data.Models
 		public int RayonModelId { get; set; } = 1;
 		public bool IsDispo { get; set; } = true;
 
+		public RayonModel Rayon { get; set; }
 	}
 }

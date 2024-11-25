@@ -61,7 +61,22 @@ namespace BiblioCore.Data.Repository.Sql
 
         public async Task<LivreModel?> ListRayon(int id, LivreModel model, int rayonModelId)
         {
-            //return await context.Set<LivreModel>().FirstOrDefaultAsync(x => x.RayonModelId == rayonModelId);
+            return await context.Set<LivreModel>().FirstOrDefaultAsync(x => x.RayonModelId == rayonModelId);
         }
+
+        public async Task<IEnumerable<LivreModel>> ListByRayonId(int rayonId)
+        {
+            return await context.Set<LivreModel>().Where(x => x.RayonModelId == rayonId).ToListAsync();
+        }
+
+        //public async Task<IEnumerable<LivreModel>> ListByRayonId(int rayonId)
+        //{
+        //	return await context.Livre.Where(l => l.RayonModelId == rayonId).ToListAsync();
+        //}
+
+        //public async Task<IEnumerable<LivreModel>> ListByRayonId(int rayonId)
+        //{
+        //    return await context.Livre.Include(l => l.Rayon).Where(l => l.RayonModelId == rayonId).ToListAsync();
+        //}
     }
 }

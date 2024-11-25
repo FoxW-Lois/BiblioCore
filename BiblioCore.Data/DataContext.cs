@@ -19,13 +19,24 @@ namespace BiblioCore.Data
 		{
 			base.OnModelCreating(modelBuilder);
 
+			//modelBuilder.Entity<LivreModel>()
+			//	.HasOne(l => l.Rayon)
+			//	.WithMany(r => r.Livres)
+			//	.HasForeignKey(l => l.RayonModelId)
+			//	.OnDelete(DeleteBehavior.Cascade);
+
+			//modelBuilder.Entity<RayonModel>()
+			//	.HasMany(r => r.Livres)
+			//	.WithOne(l => l.Rayon)
+			//	.HasForeignKey(l => l.RayonModelId);
+
 			modelBuilder.Entity<LivreModel>().HasData(
-				new LivreModel() { Id = 1, Titre = "Les Misérables", RayonModelId = 1 },
-				new LivreModel() { Id = 2, Titre = "Notre-Dame de Paris" },
-				new LivreModel() { Id = 3, Titre = "1984", RayonModelId = 2 },
-				new LivreModel() { Id = 4, Titre = "La Ferme des animaux" },
-				new LivreModel() { Id = 5, Titre = "Le Petit Prince", RayonModelId = 3 },
-				new LivreModel() { Id = 6, Titre = "Vol de Nuit" }
+				new LivreModel() { Id = 1, Titre = "Les Misérables", RayonModelId = 2 },
+				new LivreModel() { Id = 2, Titre = "Notre-Dame de Paris", RayonModelId = 1 },
+				new LivreModel() { Id = 3, Titre = "1984", RayonModelId = 3 },
+				new LivreModel() { Id = 4, Titre = "La Ferme des animaux", RayonModelId = 1 },
+				new LivreModel() { Id = 5, Titre = "Le Petit Prince", RayonModelId = 4 },
+				new LivreModel() { Id = 6, Titre = "Vol de Nuit", RayonModelId = 1 }
 			);
 
 			modelBuilder.Entity<AuteurModel>().HasData(

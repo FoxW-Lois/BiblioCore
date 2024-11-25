@@ -292,74 +292,56 @@ namespace BiblioCore.Cmd
 		}
 
 		private static void ListLivreByRayon(ILivreRepository repository)
-        {
+		{
 			while (true)
 			{
-                int id = GetId("+----------------------------------------------------+\n" +
+				int id = GetId("+----------------------------------------------------+\n" +
 								"|   Id du Rayon à afficher : ");
-                if (id == 0)
-                    return;
+				if (id == 0)
+					return;
 
-                var model = repository.ListByRayonId(id).Result;
-                if (model == null)
+				var model = repository.ListByRayonId(id).Result;
+				if (model == null || !model.Any())
 				{
 					Console.WriteLine("+----------------------------------------------------+\n");
-					Console.WriteLine("Rayon introuvable\n");
+					Console.WriteLine("Rayon introuvable ou aucun livre trouvé\n");
 				}
 				else
-				{ 
-					if (!int.TryParse(Console.ReadLine(), out int lRayonModelId))
-					{
-						Console.WriteLine("L'Id doit être exclusivement composé chiffre");
-						return;
-					}
-
-					model.RayonModelId = lRayonModelId;
-					model = repository.ListRayon(id, model, lRayonModelId).Result;
-                    Console.WriteLine(
+				{
+					//if (!int.TryParse(Console.ReadLine(), out int lRayonModelId))
+					//{
+					//	Console.WriteLine("L'Id doit être exclusivement composé chiffre");
+					//	return;
+					//}
+					//livres.RayonModelId = lRayonModelId;
+					//model = repository.ListRayon(id, model, lRayonModelId).Result;
+					Console.WriteLine(
 							"+----------------------------------------------------+\n" +
-                            "|\n" +
-                            string.Join("\n", model.Select(x => $"|    - Livre n°{x.Id} : {x.Titre}, Rayon : {x.RayonModelId}")) +
-                            "\n|\n" +
+							"|\n" +
+							string.Join("\n", model.Select(l => $"|    - Livre n°{l.Id} : {l.Titre}, Rayon : {l.RayonModelId}")) +
+							"\n|\n" +
 							"+----------------------------------------------------+");
-
-					do
-					{
-						Console.WriteLine("Voulez-vous continuer ? (y/n)");
-						string reponse = Console.ReadLine();
-						if (reponse == "y")
-						{
-							Console.WriteLine("\n");
-							break;
-						}
-						else if (reponse == "n")
-							return;
-						else
-						{
-							Console.WriteLine("Erreur veuillez réessayer");
-						}
-					} while (true);
 				}
 
-                //ContinueOrNo();
-                do
-                {
-                    Console.WriteLine("Voulez-vous continuer ? (y/n)\n");
-                    string reponse = Console.ReadLine();
-                    if (reponse == "y")
-                    {
-                        Console.WriteLine("\n");
-                        break;
-                    }
-                    else if (reponse == "n")
-                        return;
-                    else
-                    {
-                        Console.WriteLine("Erreur veuillez réessayer");
-                    }
-                } while (true);
-            }
-        }
+				//ContinueOrNo();
+				do
+				{
+					Console.WriteLine("Voulez-vous continuer ? (y/n)\n");
+					string reponse = Console.ReadLine();
+					if (reponse == "y")
+					{
+						Console.WriteLine("\n");
+						break;
+					}
+					else if (reponse == "n")
+						return;
+					else
+					{
+						Console.WriteLine("Erreur veuillez réessayer");
+					}
+				} while (true);
+			}
+		}
 
         // ----------------------------------------------------------------------------
 

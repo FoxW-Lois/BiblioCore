@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BiblioCore.Data.Models;
 using BiblioCore.Data.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace BiblioCore.Controllers
 {
@@ -53,6 +54,15 @@ namespace BiblioCore.Controllers
 			if (model == null)
 				return NotFound();
 			return model;
+		}
+
+		[HttpGet("rayon/{rayonId}/livres")]
+		public async Task<ActionResult<IEnumerable<LivreModel>>> GetLivresByRayon(int rayonId)
+		{
+			var livres = await repository.ListByRayonId(rayonId);
+			if (!livres.Any())
+				return NotFound();
+			return Ok(livres);
 		}
 
 	}
