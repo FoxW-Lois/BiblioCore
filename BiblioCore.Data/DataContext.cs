@@ -20,18 +20,19 @@ namespace BiblioCore.Data
 			base.OnModelCreating(modelBuilder);
 
 			modelBuilder.Entity<LivreModel>().HasData(
-				new LivreModel() { Id = 1, Titre = "Les Misérables", RayonModelId = 2 },
-				new LivreModel() { Id = 2, Titre = "Notre-Dame de Paris", RayonModelId = 1 },
-				new LivreModel() { Id = 3, Titre = "1984", RayonModelId = 3 },
-				new LivreModel() { Id = 4, Titre = "La Ferme des animaux", RayonModelId = 1 },
-				new LivreModel() { Id = 5, Titre = "Le Petit Prince", RayonModelId = 4 },
-				new LivreModel() { Id = 6, Titre = "Vol de Nuit", RayonModelId = 1 }
+				new LivreModel() { Id = 1, Titre = "Les Misérables", AuteurModelId = 2, RayonModelId = 2 },
+				new LivreModel() { Id = 2, Titre = "Notre-Dame de Paris", AuteurModelId = 2, RayonModelId = 1 },
+				new LivreModel() { Id = 3, Titre = "1984", AuteurModelId = 3, RayonModelId = 3 },
+				new LivreModel() { Id = 4, Titre = "La Ferme des animaux", AuteurModelId = 3, RayonModelId = 1 },
+				new LivreModel() { Id = 5, Titre = "Le Petit Prince", AuteurModelId = 4, RayonModelId = 4 },
+				new LivreModel() { Id = 6, Titre = "Vol de Nuit", AuteurModelId = 4, RayonModelId = 1 }
 			);
 
 			modelBuilder.Entity<AuteurModel>().HasData(
-				new AuteurModel() { Id = 1, FirstName = "Victor", LastName = "Hugo" },
-				new AuteurModel() { Id = 2, FirstName = "George", LastName = "Orwell" },
-				new AuteurModel() { Id = 3, FirstName = "Antoine", LastName = "de Saint-Exupéry" }
+				new AuteurModel() { Id = 1, FirstName = "Sans", LastName = "Auteur" },
+				new AuteurModel() { Id = 2, FirstName = "Victor", LastName = "Hugo" },
+				new AuteurModel() { Id = 3, FirstName = "George", LastName = "Orwell" },
+				new AuteurModel() { Id = 4, FirstName = "Antoine", LastName = "de Saint-Exupéry" }
 			);
 
 			modelBuilder.Entity<RayonModel>().HasData(
