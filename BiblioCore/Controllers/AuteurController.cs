@@ -15,11 +15,11 @@ namespace BiblioCore.Controllers
 			this.repository = repository;
 		}
 
-		[HttpGet] // api/auteur
-		public async Task<IEnumerable<AuteurModel>> Get()
-		{
-			return await repository.Get();
-		}
+		//[HttpGet] // api/auteur
+		//public async Task<IEnumerable<AuteurModel>> Get()
+		//{
+		//	return await repository.Get();
+		//}
 
 		[HttpGet("{id}")] // api/auteur/{id}
 		public ActionResult<AuteurModel> Get(int id)
@@ -54,5 +54,14 @@ namespace BiblioCore.Controllers
 				return NotFound();
 			return model;
 		}
-	}
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<LivreModel>>> GetLivresByAuteur([FromQuery] int auteurId)
+        {
+            var livres = await repository.ListByAuteurId(auteurId);
+            if (!livres.Any())
+                return NotFound();
+            return Ok(livres);
+        }
+    }
 }

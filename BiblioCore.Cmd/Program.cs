@@ -12,8 +12,9 @@ namespace BiblioCore.Cmd
 			Thread.Sleep(1000); // Attente du server
 			ILivreRepository repository = new ApiLivreRepository("http://localhost:5049/api/");
 			IRayonRepository rayonRepository = new ApiRayonRepository("http://localhost:5049/api/");
+            IAuteurRepository auteurRepository = new ApiAuteurRepository("http://localhost:5049/api/");
 
-			while (true)
+            while (true)
 			{
                 Console.WriteLine("+---------------------------------------+\n" +
 								"|       Que voulez-vous faire ?         |\n" +
@@ -35,7 +36,7 @@ namespace BiblioCore.Cmd
 								"+---------------------------------------+\n"
 				);
 
-                if (!int.TryParse(Console.ReadLine(), out int Action) || Action < 1 || Action > 7)
+                if (!int.TryParse(Console.ReadLine(), out int Action) || Action < 1 || Action > 8)
 					Console.Write("Cette Action n'est pas valide. Veuillez réessayer\n\n");
 
 				switch (Action) {
@@ -78,6 +79,12 @@ namespace BiblioCore.Cmd
                     case 7:
                         Console.WriteLine("\n");
                         ListLivreByRayon(rayonRepository);
+                        Console.WriteLine("\n");
+                    break;
+
+                    case 8:
+                        Console.WriteLine("\n");
+                        ListLivreByAuteur(auteurRepository);
                         Console.WriteLine("\n");
                     break;
                 }
@@ -302,7 +309,38 @@ namespace BiblioCore.Cmd
 			}
 		}
 
+        private static void ListLivreByAuteur(IAuteurRepository auteurRepository)
+        {
+            while (true)
+            {
+                int id = GetId("+----------------------------------------------------+\n" +
+                                "|   Id de l'Auteur à afficher : ");
+                if (id == 0)
+                    return;
 
+                var model = auteurRepository.ListByAuteurId(id).Result;
+                if (model == null || !model.Any())
+                {
+                    Console.WriteLine("+----------------------------------------------------+\n");
+                    Console.WriteLine("Auteur introuvable ou aucun livre trouvé\n");
+                }
+                else
+                {
+                    Console.WriteLine(
+							"+----------------------------------------------------+\n" +
+							"|\n" +
+							string.Join("\n", model.Select(l => $"|    - Livre n°{l.Id} : \t{l.Titre} \n|\t\t\tAuteur : {l.AuteurModelId} \n|\t\t\tRayon : {l.RayonModelId}\n|")) +
+							"\n|\n" +
+							"+----------------------------------------------------+");
+                }
+
+                bool continuer = ContinueOrNo();
+                if (!continuer)
+                {
+                    break;
+                }
+            }
+        }
         // ----------------------------------------------------------------------------
 
         private static int GetId(string message)

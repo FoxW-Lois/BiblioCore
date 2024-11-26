@@ -44,7 +44,15 @@ namespace BiblioCore.Data.Repository.Api
 			return null;
 		}
 
-		public async Task<AuteurModel?> Update(int id, AuteurModel model)
+        public async Task<IEnumerable<LivreModel>?> ListByAuteurId(int auteurId)
+        {
+            var response = await client.GetAsync($"{url}auteur?auteurId={auteurId}");
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<IEnumerable<LivreModel>>();
+            return null;
+        }
+
+        public async Task<AuteurModel?> Update(int id, AuteurModel model)
 		{
 			var response = await client.PutAsJsonAsync($"{url}auteur/{id}", model);
 			if (response.IsSuccessStatusCode)

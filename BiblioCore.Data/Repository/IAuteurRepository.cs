@@ -10,5 +10,7 @@ namespace BiblioCore.Data.Repository
 		Task<AuteurModel?> Create(AuteurModel model);
 		Task<AuteurModel?> Update(int id, AuteurModel model);
 		Task Delete(int id);
-	}
+
+        Task<IEnumerable<LivreModel>> ListByAuteurId(int auteurId);
+    }
 }
