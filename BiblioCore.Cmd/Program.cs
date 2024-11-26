@@ -21,22 +21,22 @@ namespace BiblioCore.Cmd
 								"+---------------------------------------+\n" +
 								"|                                       |\n" +
 								"|       Voir tous les livres : 1        |\n" +
-								"|        Voir un seul livre : 2         |\n" +
-								"|         Ajouter un livre : 3          |\n" +
-								"|         Modifier un livre : 4         |\n" +
-								"|        Supprimer un livre : 5         |\n" +
-								"|   Assigner un rayon à un livre : 6    |\n" +
-								"|    Lister les livres par rayon : 7    |\n" +
-								"|   Lister les livres par auteur : 8    |\n" +
-								"|   Rechercher un livre par titre : 9   |\n" +
-								"|        Emprunter un livre : 10        |\n" +
-								"|         Rendre un livre : 11          |\n" +
-								"|   Lister les livres empruntés : 12    |\n" +
+								/*"|        Voir un seul livre : 2         |\n" +*/
+								"|         Ajouter un livre : 2          |\n" +
+								"|         Modifier un livre : 3         |\n" +
+								"|        Supprimer un livre : 4         |\n" +
+								"|   Assigner un rayon à un livre : 5    |\n" +
+								"|    Lister les livres par rayon : 6    |\n" +
+								"|   Lister les livres par auteur : 7    |\n" +
+								"|   Rechercher un livre par titre : 8   |\n" +
+								"|        Emprunter un livre : 9         |\n" +
+								"|         Rendre un livre : 10          |\n" +
+								"|   Lister les livres empruntés : 11    |\n" +
 								"|                                       |\n" +
 								"+---------------------------------------+\n"
 				);
 
-                if (!int.TryParse(Console.ReadLine(), out int Action) || Action < 1 || Action > 8)
+                if (!int.TryParse(Console.ReadLine(), out int Action) || Action < 1 || Action > 9)
 					Console.Write("Cette Action n'est pas valide. Veuillez réessayer\n\n");
 
 				switch (Action) {
@@ -46,48 +46,54 @@ namespace BiblioCore.Cmd
 						Console.WriteLine("\n");
 					break;
 
-					case 2:
-						Console.WriteLine("\n");
-						GetLivre(repository);
-						Console.WriteLine("\n");
-					break;
+					//case 2:
+					//	Console.WriteLine("\n");
+					//	GetLivre(repository);
+					//	Console.WriteLine("\n");
+					//break;
 
-					case 3:
+					case 2:
 						Console.WriteLine("\n");
 						CreateLivre(repository);
 						Console.WriteLine("\n");
 					break;
 
-					case 4:
+					case 3:
 						Console.WriteLine("\n");
 						UpdateLivre(repository);
 						Console.WriteLine("\n");
 					break;
 
-					case 5:
+					case 4:
 						Console.WriteLine("\n");
 						DeleteLivre(repository);
 						Console.WriteLine("\n");
 					break;
 
-					case 6:
+					case 5:
 						Console.WriteLine("\n");
 						AssignRayonToLivre(repository);
 						Console.WriteLine("\n");
 					break;
 
-                    case 7:
+                    case 6:
                         Console.WriteLine("\n");
                         ListLivreByRayon(rayonRepository);
                         Console.WriteLine("\n");
                     break;
 
-                    case 8:
+                    case 7:
                         Console.WriteLine("\n");
                         ListLivreByAuteur(auteurRepository);
                         Console.WriteLine("\n");
                     break;
-                }
+
+					case 8:
+						Console.WriteLine("\n");
+						SearchLivreByTitre(rayonRepository);
+						Console.WriteLine("\n");
+					break;
+				}
 			}
 		}
 
@@ -110,35 +116,35 @@ namespace BiblioCore.Cmd
 							"+----------------------------------------------------+");
 		}
 
-		private static void GetLivre(ILivreRepository repository)
-		{
-			while (true)
-			{
-				int id = GetId("+----------------------------------------------------+\n" +
-								"|    - Id du Livre à voir : ");
-				if (id == 0)
-					return;
-				var model = repository.Get(id).Result;
-				if (model == null)
-				{
-					Console.WriteLine("+----------------------------------------------------+\n");
-					Console.WriteLine("Livre introuvable\n");
-				}
-				else
-					Console.WriteLine(
-							"+----------------------------------------------------+\n" +
-							"|\n" +
-							$"|    Livre n°{model.Id} : \t{model.Titre} \n|\t\t\tAuteur : {model.AuteurModelId} \n|\t\t\tRayon : {model.RayonModelId}\n|" +
-							"\n" +
-							"+----------------------------------------------------+\n");
+		//private static void GetLivre(ILivreRepository repository)
+		//{
+		//	while (true)
+		//	{
+		//		int id = GetId("+----------------------------------------------------+\n" +
+		//						"|    - Id du Livre à voir : ");
+		//		if (id == 0)
+		//			return;
+		//		var model = repository.Get(id).Result;
+		//		if (model == null)
+		//		{
+		//			Console.WriteLine("+----------------------------------------------------+\n");
+		//			Console.WriteLine("Livre introuvable\n");
+		//		}
+		//		else
+		//			Console.WriteLine(
+		//					"+----------------------------------------------------+\n" +
+		//					"|\n" +
+		//					$"|    Livre n°{model.Id} : \t{model.Titre} \n|\t\t\tAuteur : {model.AuteurModelId} \n|\t\t\tRayon : {model.RayonModelId}\n|" +
+		//					"\n" +
+		//					"+----------------------------------------------------+\n");
 
-				bool continuer = ContinueOrNo();
-				if (!continuer)
-				{
-					break;
-				}
-			}
-		}
+		//		bool continuer = ContinueOrNo();
+		//		if (!continuer)
+		//		{
+		//			break;
+		//		}
+		//	}
+		//}
 
 		private static void CreateLivre(ILivreRepository repository)
 		{
@@ -265,7 +271,7 @@ namespace BiblioCore.Cmd
 
 					model.RayonModelId = lRayonModelId;
 					model = repository.AssignRayon(id, model, lRayonModelId).Result;
-					Console.WriteLine($"Mise à jour du livre n°{model.Id} : {model.Titre}, Rayon : {model.RayonModelId} \n");
+					Console.WriteLine($"Le livre n°{model.Id} : {model.Titre} a été rangé dans le rayon : {model.RayonModelId} \n");
 				}
 
 				bool continuer = ContinueOrNo();
@@ -296,7 +302,7 @@ namespace BiblioCore.Cmd
 					Console.WriteLine(
 							"+----------------------------------------------------+\n" +
 							"|\n" +
-							string.Join("\n", model.Select(l => $"|    - Livre n°{l.Id} : {l.Titre}, Rayon : {l.RayonModelId}")) +
+							string.Join("\n", model.Select(l => $"|    - Livre n°{l.Id} : \t{l.Titre} \n|\t\t\tAuteur : {l.AuteurModelId} \n|\t\t\tRayon : {l.RayonModelId}\n|")) +
 							"\n|\n" +
 							"+----------------------------------------------------+");
 				}
@@ -309,7 +315,7 @@ namespace BiblioCore.Cmd
 			}
 		}
 
-        private static void ListLivreByAuteur(IAuteurRepository auteurRepository)
+		private static void ListLivreByAuteur(IAuteurRepository auteurRepository)
         {
             while (true)
             {
@@ -341,9 +347,47 @@ namespace BiblioCore.Cmd
                 }
             }
         }
-        // ----------------------------------------------------------------------------
 
-        private static int GetId(string message)
+		private static void SearchLivreByTitre(IRayonRepository rayonRepository)
+		{
+			while (true)
+			{
+				Console.Write("+----------------------------------------------------+\n" +
+								"|   Titre du livre à rechercher : ");
+
+				string titre = Console.ReadLine();
+				int id = 1;
+				if (titre == null)
+					return;
+
+				var model = rayonRepository.SearchByTitre(titre).Result;
+				if (model == null)
+				{
+					Console.WriteLine("+----------------------------------------------------+\n");
+					Console.WriteLine("Livre introuvable\n");
+				}
+				else
+				{
+					Console.WriteLine(
+							"+----------------------------------------------------+\n" +
+							"|\n" +
+							$"|    - Livre n°{model.Id} : \t{model.Titre} \n|\t\t\tAuteur : {model.AuteurModelId} \n|\t\t\tRayon : {model.RayonModelId}\n" +
+							"|\n" +
+							"+----------------------------------------------------+");
+				}
+
+				bool continuer = ContinueOrNo();
+				if (!continuer)
+				{
+					break;
+				}
+			}
+		}
+
+
+		// ----------------------------------------------------------------------------
+
+		private static int GetId(string message)
 		{
 			do
 			{

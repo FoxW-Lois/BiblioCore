@@ -53,5 +53,10 @@ namespace BiblioCore.Data.Repository.Sql
 		{
 			return await context.Set<LivreModel>().Where(x => x.RayonModelId == rayonId).ToListAsync();
 		}
+
+		public async Task<LivreModel?> SearchByTitre(string titre)
+		{
+			return await context.Set<LivreModel>().FirstOrDefaultAsync(x => x.Titre == titre);
+		}
 	}
 }

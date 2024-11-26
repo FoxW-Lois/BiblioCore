@@ -12,5 +12,6 @@ namespace BiblioCore.Data.Repository
 		Task Delete(int id);
 
 		Task<IEnumerable<LivreModel>> ListByRayonId(int rayonId);
+		Task<LivreModel?> SearchByTitre(string titre);
 	}
 }

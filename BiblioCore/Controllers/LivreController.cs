@@ -11,7 +11,7 @@ namespace BiblioCore.Controllers
 	{
 		private readonly ILivreRepository repository;
 
-		public LivreController(ILivreRepository repository) 
+		public LivreController(ILivreRepository repository)
 		{
 			this.repository = repository;
 		}
@@ -56,5 +56,13 @@ namespace BiblioCore.Controllers
 			return model;
 		}
 
+		//[HttpGet("{titre}")] // api/livre/{titre}
+		//public ActionResult<LivreModel> SearchByTitre(string titre)
+		//{
+		//	var model = repository.SearchByTitre(titre).Result;
+		//	if (model == null)
+		//		return NotFound();
+		//	return model;
+		//}
 	}
 }

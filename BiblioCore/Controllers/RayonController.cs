@@ -21,14 +21,14 @@ namespace BiblioCore.Controllers
 		//	return await repository.Get();
 		//}
 
-		[HttpGet("{id}")] // api/rayon/{id}
-		public ActionResult<RayonModel> Get(int id)
-		{
-			var model = repository.Get(id).Result;
-			if (model == null)
-				return NotFound();
-			return model;
-		}
+		//[HttpGet("{id}")] // api/rayon/{id}
+		//public ActionResult<RayonModel> Get(int id)
+		//{
+		//	var model = repository.Get(id).Result;
+		//	if (model == null)
+		//		return NotFound();
+		//	return model;
+		//}
 
 		[HttpDelete("{id}")] // api/rayon/{id}
 		public async Task<ActionResult> Delete(int id)
@@ -64,5 +64,13 @@ namespace BiblioCore.Controllers
 			return Ok(livres);
 		}
 
+		[HttpGet("{titre}")] // api/rayon/{titre}
+		public ActionResult<LivreModel> SearchByTitre(/*[FromQuery]*/ string titre)
+		{
+			var model = repository.SearchByTitre(titre).Result;
+			if (model == null)
+				return NotFound();
+			return model;
+		}
 	}
 }
