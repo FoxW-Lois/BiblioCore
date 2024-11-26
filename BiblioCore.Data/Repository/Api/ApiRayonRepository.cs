@@ -44,6 +44,14 @@ namespace BiblioCore.Data.Repository.Api
 			return null;
 		}
 
+		public async Task<IEnumerable<LivreModel>?> ListByRayonId(int rayonId)
+		{
+			var response = await client.GetAsync($"{url}rayon?rayonId={rayonId}");
+			if (response.IsSuccessStatusCode)
+				return await response.Content.ReadFromJsonAsync<IEnumerable<LivreModel>>();
+			return null;
+		}
+
 		public async Task<RayonModel?> Update(int id, RayonModel model)
 		{
 			var response = await client.PutAsJsonAsync($"{url}rayon/{id}", model);

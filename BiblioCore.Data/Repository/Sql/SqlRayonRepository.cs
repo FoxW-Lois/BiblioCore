@@ -48,5 +48,10 @@ namespace BiblioCore.Data.Repository.Sql
 			context.Set<RayonModel>().Remove(model);
 			await context.SaveChangesAsync();
 		}
+
+		public async Task<IEnumerable<LivreModel>> ListByRayonId(int rayonId)
+		{
+			return await context.Set<LivreModel>().Where(x => x.RayonModelId == rayonId).ToListAsync();
+		}
 	}
 }

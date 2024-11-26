@@ -11,24 +11,13 @@ namespace BiblioCore.Data
 		public DataContext(DbContextOptions<DataContext> options)
 			: base(options)
 		{
-			//Database.EnsureDeleted();
-			//Database.EnsureCreated();
+			Database.EnsureDeleted();
+			Database.EnsureCreated();
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-
-			//modelBuilder.Entity<LivreModel>()
-			//	.HasOne(l => l.Rayon)
-			//	.WithMany(r => r.Livres)
-			//	.HasForeignKey(l => l.RayonModelId)
-			//	.OnDelete(DeleteBehavior.Cascade);
-
-			//modelBuilder.Entity<RayonModel>()
-			//	.HasMany(r => r.Livres)
-			//	.WithOne(l => l.Rayon)
-			//	.HasForeignKey(l => l.RayonModelId);
 
 			modelBuilder.Entity<LivreModel>().HasData(
 				new LivreModel() { Id = 1, Titre = "Les Misérables", RayonModelId = 2 },

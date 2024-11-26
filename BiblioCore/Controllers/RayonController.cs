@@ -15,11 +15,11 @@ namespace BiblioCore.Controllers
 			this.repository = repository;
 		}
 
-		[HttpGet] // api/rayon
-		public async Task<IEnumerable<RayonModel>> Get()
-		{
-			return await repository.Get();
-		}
+		//[HttpGet] // api/rayon
+		//public async Task<IEnumerable<RayonModel>> Get()
+		//{
+		//	return await repository.Get();
+		//}
 
 		[HttpGet("{id}")] // api/rayon/{id}
 		public ActionResult<RayonModel> Get(int id)
@@ -54,5 +54,15 @@ namespace BiblioCore.Controllers
 				return NotFound();
 			return model;
 		}
+
+		[HttpGet]
+		public async Task<ActionResult<IEnumerable<LivreModel>>> GetLivresByRayon([FromQuery] int rayonId)
+		{
+			var livres = await repository.ListByRayonId(rayonId);
+			if (!livres.Any())
+				return NotFound();
+			return Ok(livres);
+		}
+
 	}
 }

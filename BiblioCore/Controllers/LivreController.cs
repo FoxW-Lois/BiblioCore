@@ -56,14 +56,5 @@ namespace BiblioCore.Controllers
 			return model;
 		}
 
-		[HttpGet("rayon/{rayonId}/livres")]
-		public async Task<ActionResult<IEnumerable<LivreModel>>> GetLivresByRayon(int rayonId)
-		{
-			var livres = await repository.ListByRayonId(rayonId);
-			if (!livres.Any())
-				return NotFound();
-			return Ok(livres);
-		}
-
 	}
 }

@@ -11,6 +11,7 @@ namespace BiblioCore.Cmd
 			Console.WriteLine("Bienvenue sur l'API BiblioCore !\n");
 			Thread.Sleep(1000); // Attente du server
 			ILivreRepository repository = new ApiLivreRepository("http://localhost:5049/api/");
+			IRayonRepository rayonRepository = new ApiRayonRepository("http://localhost:5049/api/");
 
 			while (true)
 			{
@@ -76,7 +77,7 @@ namespace BiblioCore.Cmd
 
                     case 7:
                         Console.WriteLine("\n");
-                        ListLivreByRayon(repository);
+                        ListLivreByRayon(repository, rayonRepository);
                         Console.WriteLine("\n");
                     break;
                 }
@@ -172,9 +173,7 @@ namespace BiblioCore.Cmd
 					Console.WriteLine("Livre introuvable\n");
 				else
 				{
-					//Récupère en base de données le nom de l'auteur correspondant à AuteurModelId
-					//string NomAuteur = ;
-					Console.WriteLine($"Le livre n°{Livre.Id} : {Livre.Titre}, Auteur : {Livre.AuteurModelId}" /*NomAuteur */ + " a été ajouté\n");
+					Console.WriteLine($"Le livre n°{Livre.Id} : {Livre.Titre}, Auteur : {Livre.AuteurModelId} a été ajouté\n");
 
 				}
 
@@ -291,7 +290,7 @@ namespace BiblioCore.Cmd
 			}
 		}
 
-		private static void ListLivreByRayon(ILivreRepository repository)
+		private static void ListLivreByRayon(ILivreRepository repository, IRayonRepository rayonRepository)
 		{
 			while (true)
 			{
@@ -300,7 +299,7 @@ namespace BiblioCore.Cmd
 				if (id == 0)
 					return;
 
-				var model = repository.ListByRayonId(id).Result;
+				var model = rayonRepository.ListByRayonId(id).Result;
 				if (model == null || !model.Any())
 				{
 					Console.WriteLine("+----------------------------------------------------+\n");
@@ -323,7 +322,7 @@ namespace BiblioCore.Cmd
 							"+----------------------------------------------------+");
 				}
 
-				//ContinueOrNo();
+				//	//ContinueOrNo();
 				do
 				{
 					Console.WriteLine("Voulez-vous continuer ? (y/n)\n");
@@ -355,24 +354,24 @@ namespace BiblioCore.Cmd
 			} while (true);
 		}
 
-		//private static void ContinueOrNo()
+		//private static bool ContinueOrNo()
 		//{
-		//	do
+		//	while (true)
 		//	{
 		//		Console.WriteLine("Voulez-vous continuer ? (y/n)\n");
 		//		string reponse = Console.ReadLine();
 		//		if (reponse == "y")
 		//		{
 		//			Console.WriteLine("\n");
-		//			break;
+		//			return true;
 		//		}
 		//		else if (reponse == "n")
-		//			return;
+		//			return false;
 		//		else
 		//		{
 		//			Console.WriteLine("Erreur veuillez réessayer");
 		//		}
-		//	} while (true);
+		//	}
 		//}
 	}
 }
