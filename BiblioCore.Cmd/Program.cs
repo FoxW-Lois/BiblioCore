@@ -486,20 +486,6 @@ namespace BiblioCore.Cmd
 
 		private static void GetLivreEmprunt(ILivreRepository repository)
 		{
-			//var models = repository.GetLivreEmpruntes(false).Result;
-			//if (models == null)
-			//{
-			//	Console.WriteLine("Erreur Api");
-			//	return;
-			//}
-
-			//Console.WriteLine(
-			//				"+----------------------------------------------------+\n" +
-			//				"|\n" +
-			//				string.Join("\n", models.Select(x => $"|    - Livre n°{x.Id} : \t{x.Titre} \n|\t\t\tAuteur : {x.AuteurModelId} \n|\t\t\tRayon : {x.RayonModelId} \n|\t\t\tEmprunteur : {x.MembreModelId} \n|\t\t\tDisponibilité : {x.IsDispo}\n|")) +
-			//				"\n" +
-			//				"+----------------------------------------------------+");
-
 			var models = repository.Get().Result;
 			if (models == null)
 			{

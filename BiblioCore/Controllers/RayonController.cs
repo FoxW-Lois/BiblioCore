@@ -65,7 +65,7 @@ namespace BiblioCore.Controllers
 		}
 
 		[HttpGet("{titre}")] // api/rayon/{titre}
-		public ActionResult<LivreModel> SearchByTitre(/*[FromQuery]*/ string titre)
+		public ActionResult<LivreModel> SearchByTitre(string titre) //[FromQuery] string titre
 		{
 			var model = repository.SearchByTitre(titre).Result;
 			if (model == null)

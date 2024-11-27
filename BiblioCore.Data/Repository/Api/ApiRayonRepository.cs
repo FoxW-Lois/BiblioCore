@@ -54,7 +54,7 @@ namespace BiblioCore.Data.Repository.Api
 
 		public async Task<LivreModel?> SearchByTitre(string titre)
 		{
-			var reponse = await client.GetAsync($"{url}rayon/{titre}"); //}rayon?titre={titre}
+			var reponse = await client.GetAsync($"{url}rayon/{titre}");				//}rayon?titre={titre}
 			if (reponse.IsSuccessStatusCode)
 				return await reponse.Content.ReadFromJsonAsync<LivreModel>();
 			return null;
