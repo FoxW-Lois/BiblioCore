@@ -2,7 +2,7 @@
 
 namespace BiblioCore.Data.Repository
 {
-	internal interface IApiLivreRepository
+	public interface IApiLivreRepository
 	{
 		IEnumerable<LivreModel> Get();
 		IEnumerable<LivreModel> Get(int id);

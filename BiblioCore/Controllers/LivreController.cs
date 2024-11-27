@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using BiblioCore.Data.Models;
+﻿using BiblioCore.Data.Models;
 using BiblioCore.Data.Repository;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BiblioCore.Controllers
 {

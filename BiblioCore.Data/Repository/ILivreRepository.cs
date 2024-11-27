@@ -12,6 +12,7 @@ namespace BiblioCore.Data.Repository
 		Task<LivreModel?> AssignRayon(int id, LivreModel model, int RayonModelId);
 		Task<LivreModel?> ListRayon(int id, LivreModel model, int RayonModelId);
 		//Task<LivreModel?> SearchByTitre(string titre);
+		Task<LivreModel?> BorrowOneLivre(int id, LivreModel model, int MembreModelId, bool isDispo);
 		Task Delete(int id);
 
 	}

@@ -68,5 +68,15 @@ namespace BiblioCore.Data.Repository.Sql
 		//{
 		//	return await context.Set<LivreModel>().FirstOrDefaultAsync(x => x.Titre == titre);
 		//}
+
+		public async Task<LivreModel?> BorrowOneLivre(int id, LivreModel model, int MembreModelId, bool isDispo)
+		{
+			var entity = await context.Set<LivreModel>().FirstOrDefaultAsync(x => x.Id == id);
+			if (entity == null)
+				return null;
+			context.Entry(entity).CurrentValues.SetValues(model);
+			await context.SaveChangesAsync();
+			return entity;
+		}
 	}
 }

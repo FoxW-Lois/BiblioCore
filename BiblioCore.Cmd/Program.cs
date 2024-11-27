@@ -13,8 +13,9 @@ namespace BiblioCore.Cmd
 			ILivreRepository repository = new ApiLivreRepository("http://localhost:5049/api/");
 			IRayonRepository rayonRepository = new ApiRayonRepository("http://localhost:5049/api/");
             IAuteurRepository auteurRepository = new ApiAuteurRepository("http://localhost:5049/api/");
+			//IMembreRepository membreRepository = new ApiMembreRepository("http://localhost:5049/api/");
 
-            while (true)
+			while (true)
 			{
                 Console.WriteLine("+---------------------------------------+\n" +
 								"|       Que voulez-vous faire ?         |\n" +
@@ -37,7 +38,10 @@ namespace BiblioCore.Cmd
 				);
 
                 if (!int.TryParse(Console.ReadLine(), out int Action) || Action < 1 || Action > 9)
+				{
 					Console.Write("Cette Action n'est pas valide. Veuillez réessayer\n\n");
+					return;
+				}
 
 				switch (Action) {
 					case 1 :
@@ -93,6 +97,12 @@ namespace BiblioCore.Cmd
 						SearchLivreByTitre(rayonRepository);
 						Console.WriteLine("\n");
 					break;
+
+					case 9:
+						Console.WriteLine("\n");
+						BorrowLivre(repository);
+						Console.WriteLine("\n");
+					break;
 				}
 			}
 		}
@@ -111,7 +121,7 @@ namespace BiblioCore.Cmd
 			Console.WriteLine(
 							"+----------------------------------------------------+\n" +
 							"|\n" +
-							string.Join("\n", models.Select(x => $"|    - Livre n°{x.Id} : \t{x.Titre} \n|\t\t\tAuteur : {x.AuteurModelId} \n|\t\t\tRayon : {x.RayonModelId}\n|")) +
+							string.Join("\n", models.Select(x => $"|    - Livre n°{x.Id} : \t{x.Titre} \n|\t\t\tAuteur : {x.AuteurModelId} \n|\t\t\tRayon : {x.RayonModelId} \n|\t\t\tEmprunteur : {x.MembreModelId} \n|\t\t\tDisponibilité : {x.IsDispo}\n|")) +
 							"\n" +
 							"+----------------------------------------------------+");
 		}
@@ -374,6 +384,49 @@ namespace BiblioCore.Cmd
 							$"|    - Livre n°{model.Id} : \t{model.Titre} \n|\t\t\tAuteur : {model.AuteurModelId} \n|\t\t\tRayon : {model.RayonModelId}\n" +
 							"|\n" +
 							"+----------------------------------------------------+");
+				}
+
+				bool continuer = ContinueOrNo();
+				if (!continuer)
+				{
+					break;
+				}
+			}
+		}
+
+		private static void BorrowLivre(ILivreRepository repository)
+		{
+			while (true)
+			{
+				int id = GetId("+----------------------------------------------------+\n" +
+								"|   Id du livre à emprunter : ");
+				if (id == 0)
+					return;
+
+				var model = repository.Get(id).Result;
+
+				if (model == null)
+					Console.WriteLine("Livre introuvable");
+				else
+				{
+					Console.Write("+----------------------------------------------------+\n" +
+								"|   Id du Membre qui emprunte : ");
+
+					if (!int.TryParse(Console.ReadLine(), out int lMembreModelId))
+					{
+						Console.WriteLine("L'Id doit être exclusivement composé chiffre");
+						return;
+					}
+					Console.WriteLine("+----------------------------------------------------+");
+
+					model.MembreModelId = lMembreModelId;
+					model.IsDispo = false;
+					bool lIsDispo = model.IsDispo;
+					model = repository.BorrowOneLivre(id, model, lMembreModelId, lIsDispo).Result;
+
+					if (model.MembreModelId != 1)
+						lIsDispo = false;
+					Console.WriteLine($"Le livre n°{model.Id} : {model.Titre} a été emprunté par : {model.MembreModelId}, Disponibilité : {lIsDispo} \n");
 				}
 
 				bool continuer = ContinueOrNo();
