@@ -37,7 +37,7 @@ namespace BiblioCore.Cmd
 								"+---------------------------------------+\n"
 				);
 
-                if (!int.TryParse(Console.ReadLine(), out int Action) || Action < 1 || Action > 9)
+                if (!int.TryParse(Console.ReadLine(), out int Action) || Action < 1 || Action > 10)
 				{
 					Console.Write("Cette Action n'est pas valide. Veuillez réessayer\n\n");
 					return;
@@ -103,7 +103,13 @@ namespace BiblioCore.Cmd
 						BorrowLivre(repository);
 						Console.WriteLine("\n");
 					break;
-				}
+
+                    case 10:
+                        Console.WriteLine("\n");
+                        ReturnLivre(repository);
+                        Console.WriteLine("\n");
+                    break;
+                }
 			}
 		}
 
@@ -437,10 +443,43 @@ namespace BiblioCore.Cmd
 			}
 		}
 
+        private static void ReturnLivre(ILivreRepository repository)
+        {
+            while (true)
+            {
+                int id = GetId("+----------------------------------------------------+\n" +
+                                "|   Id du livre à rendre : ");
+                if (id == 0)
+                    return;
 
-		// ----------------------------------------------------------------------------
+                var model = repository.Get(id).Result;
+				Console.WriteLine("+----------------------------------------------------+\n");
+                if (model == null)
+                    Console.WriteLine("Livre introuvable");
+                else
+                {
+					int lMembreModelId = 1;
+                    model.MembreModelId = lMembreModelId;
+                    model.IsDispo = true;
+                    bool lIsDispo = model.IsDispo;
+                    model = repository.ReturnOneLivre(id, model, lMembreModelId, lIsDispo).Result;
 
-		private static int GetId(string message)
+                    if (model.MembreModelId == 1)
+                        lIsDispo = true;
+                    Console.WriteLine($"Le livre n°{model.Id} : {model.Titre} a été rendu, Disponibilité : {lIsDispo} \n");
+                }
+
+                bool continuer = ContinueOrNo();
+                if (!continuer)
+                {
+                    break;
+                }
+            }
+        }
+
+        // ----------------------------------------------------------------------------
+
+        private static int GetId(string message)
 		{
 			do
 			{

@@ -78,5 +78,15 @@ namespace BiblioCore.Data.Repository.Sql
 			await context.SaveChangesAsync();
 			return entity;
 		}
-	}
+
+        public async Task<LivreModel?> ReturnOneLivre(int id, LivreModel model, int MembreModelId, bool isDispo)
+        {
+            var entity = await context.Set<LivreModel>().FirstOrDefaultAsync(x => x.Id == id);
+            if (entity == null)
+                return null;
+            context.Entry(entity).CurrentValues.SetValues(model);
+            await context.SaveChangesAsync();
+            return entity;
+        }
+    }
 }

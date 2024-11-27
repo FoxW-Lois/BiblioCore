@@ -83,5 +83,13 @@ namespace BiblioCore.Data.Repository.Api
 				return await response.Content.ReadFromJsonAsync<LivreModel>();
 			return null;
 		}
-	}
+
+        public async Task<LivreModel?> ReturnOneLivre(int id, LivreModel model, int MembreModelId, bool isDispo)
+        {
+            var response = await client.PutAsJsonAsync($"{url}livre/{id}", model);
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<LivreModel>();
+            return null;
+        }
+    }
 }
