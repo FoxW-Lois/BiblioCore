@@ -20,12 +20,12 @@ namespace BiblioCore.Data
 			base.OnModelCreating(modelBuilder);
 
 			modelBuilder.Entity<LivreModel>().HasData(
-				new LivreModel() { Id = 1, Titre = "Les Misérables", AuteurModelId = 2, RayonModelId = 2, MembreModelId = 1 },
-				new LivreModel() { Id = 2, Titre = "Notre-Dame de Paris", AuteurModelId = 2, RayonModelId = 1, MembreModelId = 1 },
-				new LivreModel() { Id = 3, Titre = "1984", AuteurModelId = 3, RayonModelId = 3, MembreModelId = 1 },
-				new LivreModel() { Id = 4, Titre = "La Ferme des animaux", AuteurModelId = 3, RayonModelId = 1, MembreModelId = 1 },
-				new LivreModel() { Id = 5, Titre = "Le Petit Prince", AuteurModelId = 4, RayonModelId = 4, MembreModelId = 1 },
-				new LivreModel() { Id = 6, Titre = "Vol de Nuit", AuteurModelId = 4, RayonModelId = 1, MembreModelId = 1 }
+				new LivreModel() { Id = 1, Titre = "Les Misérables", AuteurModelId = 2, RayonModelId = 2, MembreModelId = 1, IsDispo = true },
+				new LivreModel() { Id = 2, Titre = "Notre-Dame de Paris", AuteurModelId = 2, RayonModelId = 1, MembreModelId = 1, IsDispo = true },
+				new LivreModel() { Id = 3, Titre = "1984", AuteurModelId = 3, RayonModelId = 3, MembreModelId = 1, IsDispo = true },
+				new LivreModel() { Id = 4, Titre = "La Ferme des animaux", AuteurModelId = 3, RayonModelId = 1, MembreModelId = 1, IsDispo = true },
+				new LivreModel() { Id = 5, Titre = "Le Petit Prince", AuteurModelId = 4, RayonModelId = 4, MembreModelId = 1, IsDispo = true },
+				new LivreModel() { Id = 6, Titre = "Vol de Nuit", AuteurModelId = 4, RayonModelId = 1, MembreModelId = 1, IsDispo = true }
 			);
 
 			modelBuilder.Entity<AuteurModel>().HasData(

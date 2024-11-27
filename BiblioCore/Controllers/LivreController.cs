@@ -63,5 +63,14 @@ namespace BiblioCore.Controllers
 		//		return NotFound();
 		//	return model;
 		//}
+
+		//[HttpGet("{dispo}")] // api/livre/{id}
+		//public ActionResult<IEnumerable<LivreModel>> GetLivreEmpruntes(bool dispo)
+		//{
+		//	var model = repository.GetLivreEmpruntes(dispo).Result;
+		//	if (model == null)
+		//		return NotFound();
+		//	return model;
+		//}
 	}
 }

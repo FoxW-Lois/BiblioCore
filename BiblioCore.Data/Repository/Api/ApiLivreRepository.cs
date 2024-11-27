@@ -43,7 +43,7 @@ namespace BiblioCore.Data.Repository.Api
 				return await reponse.Content.ReadFromJsonAsync<IEnumerable<LivreModel>>();
 			return null;
 		}
-
+		
 		public async Task<LivreModel?> Get(int id)
 		{
 			var reponse = await client.GetAsync($"{url}livre/{id}");
@@ -91,5 +91,13 @@ namespace BiblioCore.Data.Repository.Api
                 return await response.Content.ReadFromJsonAsync<LivreModel>();
             return null;
         }
-    }
+
+		public async Task<IEnumerable<LivreModel>?> GetLivreEmpruntes(bool isDispo)
+		{
+			var reponse = await client.GetAsync($"{url}livre/{isDispo}");
+			if (reponse.IsSuccessStatusCode)
+				return await reponse.Content.ReadFromJsonAsync<IEnumerable<LivreModel>>();
+			return null;
+		}
+	}
 }

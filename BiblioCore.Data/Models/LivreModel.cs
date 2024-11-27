@@ -1,5 +1,4 @@
-﻿
-namespace BiblioCore.Data.Models
+﻿namespace BiblioCore.Data.Models
 {
 	public class LivreModel
 	{

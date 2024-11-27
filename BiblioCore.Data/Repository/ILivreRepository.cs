@@ -14,7 +14,8 @@ namespace BiblioCore.Data.Repository
 		//Task<LivreModel?> SearchByTitre(string titre);
 		Task<LivreModel?> BorrowOneLivre(int id, LivreModel model, int MembreModelId, bool isDispo);
         Task<LivreModel?> ReturnOneLivre(int id, LivreModel model, int MembreModelId, bool isDispo);
-        Task Delete(int id);
+		Task<IEnumerable<LivreModel>> GetLivreEmpruntes(bool isDispo);
+		Task Delete(int id);
 
 	}
 }

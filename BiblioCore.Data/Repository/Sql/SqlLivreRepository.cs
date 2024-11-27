@@ -88,5 +88,11 @@ namespace BiblioCore.Data.Repository.Sql
             await context.SaveChangesAsync();
             return entity;
         }
-    }
+
+		public async Task<IEnumerable<LivreModel>> GetLivreEmpruntes(bool dispo)
+		{
+			return await context.Set<LivreModel>().Where(x => x.IsDispo == dispo).ToListAsync();
+		}
+
+	}
 }

@@ -1,6 +1,7 @@
 ﻿using BiblioCore.Data.Models;
 using BiblioCore.Data.Repository;
 using BiblioCore.Data.Repository.Api;
+using System.Text;
 
 namespace BiblioCore.Cmd
 {
@@ -37,7 +38,7 @@ namespace BiblioCore.Cmd
 								"+---------------------------------------+\n"
 				);
 
-                if (!int.TryParse(Console.ReadLine(), out int Action) || Action < 1 || Action > 10)
+                if (!int.TryParse(Console.ReadLine(), out int Action) || Action < 1 || Action > 11)
 				{
 					Console.Write("Cette Action n'est pas valide. Veuillez réessayer\n\n");
 					return;
@@ -109,7 +110,13 @@ namespace BiblioCore.Cmd
                         ReturnLivre(repository);
                         Console.WriteLine("\n");
                     break;
-                }
+
+					case 11:
+						Console.WriteLine("\n");
+						GetLivreEmprunt(repository);
+						Console.WriteLine("\n");
+					break;
+				}
 			}
 		}
 
@@ -319,7 +326,7 @@ namespace BiblioCore.Cmd
 							"+----------------------------------------------------+\n" +
 							"|\n" +
 							string.Join("\n", model.Select(l => $"|    - Livre n°{l.Id} : \t{l.Titre} \n|\t\t\tAuteur : {l.AuteurModelId} \n|\t\t\tRayon : {l.RayonModelId}\n|")) +
-							"\n|\n" +
+							"\n" +
 							"+----------------------------------------------------+");
 				}
 
@@ -352,7 +359,7 @@ namespace BiblioCore.Cmd
 							"+----------------------------------------------------+\n" +
 							"|\n" +
 							string.Join("\n", model.Select(l => $"|    - Livre n°{l.Id} : \t{l.Titre} \n|\t\t\tAuteur : {l.AuteurModelId} \n|\t\t\tRayon : {l.RayonModelId}\n|")) +
-							"\n|\n" +
+							"\n" +
 							"+----------------------------------------------------+");
                 }
 
@@ -453,7 +460,7 @@ namespace BiblioCore.Cmd
                     return;
 
                 var model = repository.Get(id).Result;
-				Console.WriteLine("+----------------------------------------------------+\n");
+				Console.WriteLine("+----------------------------------------------------+");
                 if (model == null)
                     Console.WriteLine("Livre introuvable");
                 else
@@ -477,9 +484,42 @@ namespace BiblioCore.Cmd
             }
         }
 
-        // ----------------------------------------------------------------------------
+		private static void GetLivreEmprunt(ILivreRepository repository)
+		{
+			//var models = repository.GetLivreEmpruntes(false).Result;
+			//if (models == null)
+			//{
+			//	Console.WriteLine("Erreur Api");
+			//	return;
+			//}
 
-        private static int GetId(string message)
+			//Console.WriteLine(
+			//				"+----------------------------------------------------+\n" +
+			//				"|\n" +
+			//				string.Join("\n", models.Select(x => $"|    - Livre n°{x.Id} : \t{x.Titre} \n|\t\t\tAuteur : {x.AuteurModelId} \n|\t\t\tRayon : {x.RayonModelId} \n|\t\t\tEmprunteur : {x.MembreModelId} \n|\t\t\tDisponibilité : {x.IsDispo}\n|")) +
+			//				"\n" +
+			//				"+----------------------------------------------------+");
+
+			var models = repository.Get().Result;
+			if (models == null)
+			{
+				Console.WriteLine("Erreur Api");
+				return;
+			}
+
+			Console.WriteLine(
+							"+----------------------------------------------------+\n" +
+							"|\n" +
+							string.Join("\n", models
+								.Where(x => !x.IsDispo)
+								.Select(x => $"|    - Livre n°{x.Id} : \t{x.Titre} \n|\t\t\tAuteur : {x.AuteurModelId} \n|\t\t\tRayon : {x.RayonModelId} \n|\t\t\tEmprunteur : {x.MembreModelId} \n|\t\t\tDisponibilité : {x.IsDispo}\n|")) +
+							"\n" +
+							"+----------------------------------------------------+");
+		}
+
+		// ----------------------------------------------------------------------------
+
+		private static int GetId(string message)
 		{
 			do
 			{

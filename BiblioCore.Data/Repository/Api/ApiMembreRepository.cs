@@ -22,7 +22,7 @@ namespace BiblioCore.Data.Repository.Api
 				return await reponse.Content.ReadFromJsonAsync<IEnumerable<MembreModel>>();
 			return null;
 		}
-
+		
 		public async Task<MembreModel?> Get(int id)
 		{
 			var reponse = await client.GetAsync($"{url}membre/{id}");
